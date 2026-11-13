@@ -1,0 +1,22 @@
+/* Beyond map: distance from the Sun on a logarithmic scale (1 AU = distance from Earth to the Sun).
+   Sources: NASA Pioneer 10 last-signal release; NASA Voyager mission pages; Pioneer 11 final contact, Nov 1995. */
+const MAXAU=200,W=720,H=300,X0=30,X1=690;
+const gx=au=>X0+Math.log10(au)/Math.log10(MAXAU)*(X1-X0);
+const PL=[["Jupiter",5.2],["Saturn",9.5],["Uranus",19.2],["Neptune",30.1]];
+const SITES=[
+["Kepler",1,["Kepler Space Telescope"],"beyond-6","About 1 AU from the Sun, in an orbit around the Sun trailing Earth. Retired October 30, 2018.",-1],
+["Cassini",9.5,["Cassini"],"beyond-5","Ended its mission in Saturn's atmosphere on September 15, 2017. Saturn is about 9.5 AU from the Sun.",-1],
+["Pioneer 11",44,["Pioneer 11"],"beyond-2","Last transmission on November 24, 1995, at about 44 AU from the Sun (NASA ended routine operations on September 30, 1995).",-2],
+["Pioneer 10",82,["Pioneer 10"],"beyond-1","Last signal on January 23, 2003, at about 82 AU from the Sun (NASA).",-1],
+["Voyager 2",119,["Voyager 2"],"beyond-4","Crossed into interstellar space on November 5, 2018, at about 119 AU. It is still operating; see NASA for its distance now.",-2],
+["Voyager 1",122,["Voyager 1"],"beyond-3","Entered interstellar space in August 2012, at about 122 AU. NASA predicted it would reach one light-day from Earth (173.14 AU) on November 18, 2026.",-3]];
+let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distance from the Sun for spacecraft left in deep space"><rect width="${W}" height="${H}" rx="14" fill="#060a18"/><line x1="${X0}" y1="190" x2="${X1}" y2="190" stroke="#9ee7ff66" stroke-width="2"/><g font-family="Inter,sans-serif" font-size="9" fill="#9aa7c0" text-anchor="middle">`;
+[1,10,100].forEach(v=>svg+=`<line x1="${gx(v)}" y1="184" x2="${gx(v)}" y2="196" stroke="#fff6"/><text x="${gx(v)}" y="210">${v} AU</text>`);
+PL.forEach(p=>svg+=`<circle cx="${gx(p[1])}" cy="190" r="3" fill="#7d838f"/><text x="${gx(p[1])}" y="226" fill="#7d838f">${p[0]}</text>`);
+svg+=`</g><rect x="${gx(119)-3}" y="150" width="${gx(173.14)-gx(119)+6}" height="80" fill="#6a4bff22" stroke="#6a4bff88" stroke-dasharray="3 3"/><text x="${X1}" y="250" font-family="Inter,sans-serif" font-size="9" fill="#b9a8ff" text-anchor="end">Interstellar space (beyond about 119 to 122 AU)</text><circle cx="${gx(1)}" cy="190" r="7" fill="#ffd36a"/><text x="${gx(1)+10}" y="172" font-family="Inter,sans-serif" font-size="9" fill="#ffd36a" text-anchor="start">Earth orbit 1 AU</text>`;
+SITES.forEach((s,i)=>{const x=gx(s[1]),yo=[-0,0,0,0,0,0];const ly=[130,150,110,150,110,70][i];svg+=`<g class="site" data-i="${i}" tabindex="0"><circle cx="${x.toFixed(1)}" cy="${ly}" r="14" fill="transparent"/><line x1="${x}" y1="${ly+4}" x2="${x}" y2="190" stroke="#9ee7ff55"/><circle class="dot" cx="${x.toFixed(1)}" cy="${ly}" r="6"/><text x="${(x+9).toFixed(1)}" y="${ly+3}" text-anchor="start">${s[0]}</text></g>`});
+svg+=`<text x="${X1}" y="30" font-family="Inter,sans-serif" font-size="10" fill="#9aa7c0" text-anchor="end">Distance from the Sun (logarithmic scale)</text></svg>`;
+const box=document.getElementById("beyondmap");
+box.innerHTML=`<div>${svg}<p class="mnote">Positions show distance from the Sun at the moment named for each spacecraft, not where it is today. The scale is logarithmic so that all six fit.</p></div><div><h2>Where was it left?</h2><p>Select a spacecraft to see where it ended or was last heard from.</p><div id="siteinfo"></div><p class="mnote">Sources: <a href="https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/" target="_blank" rel="noopener" style="color:#9ee7ff">NASA, Pioneer 10 last signal</a>; <a href="https://science.nasa.gov/mission/voyager/where-are-voyager-1-and-voyager-2-now/" target="_blank" rel="noopener" style="color:#9ee7ff">NASA, where are Voyager 1 and 2 now</a> (live distances); <a href="https://nssdc.gsfc.nasa.gov/planetary/text/pion10_pr_20030225.txt" target="_blank" rel="noopener" style="color:#9ee7ff">NASA NSSDC, Pioneer 11 final contact</a>.</p></div>`;
+function pick(i){const s=SITES[i];document.querySelectorAll(".site").forEach((g,j)=>g.classList.toggle("on",i==j));document.getElementById("siteinfo").innerHTML=`<h3 style="font-size:24px;color:#9ee7ff">${s[0]}</h3><p style="font-size:18px">${s[4]}</p><a href="explore.html#e-${s[3]}" style="color:#9ee7ff">Open in the Equipment Explorer →</a>`}
+box.querySelectorAll(".site").forEach(g=>{g.onclick=()=>pick(+g.dataset.i);g.onkeydown=e=>{if(e.key=="Enter")pick(+g.dataset.i)}});pick(5);

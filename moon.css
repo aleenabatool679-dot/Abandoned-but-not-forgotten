@@ -1,0 +1,4 @@
+/* MOON page theme */
+.moon{background:linear-gradient(#0a0c11,#1b1e26 60%,#2a2d35);--ac:#cfd5e0;--bd:#6b7280}
+.moon::before{content:"";background:radial-gradient(circle at 15% 80%,#0003 0 60px,#fff1 62px 64px,#0000 66px),radial-gradient(circle at 80% 60%,#0003 0 90px,#fff1 92px 95px,#0000 97px),radial-gradient(circle at 50% 95%,#0003 0 120px,#fff1 122px 126px,#0000 128px);animation:none}
+.orb{background:radial-gradient(circle at 70% 62%,#0003 0 22px,#0000 24px),radial-gradient(circle at 36% 40%,#0003 0 34px,#0000 36px),radial-gradient(circle at 32% 30%,#f2f4f8,#aeb4c0 38%,#5b616d 72%,#262a33);box-shadow:0 0 120px #cfd5e033,inset -30px -20px 60px #000a}

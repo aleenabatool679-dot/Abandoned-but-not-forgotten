@@ -1,0 +1,5 @@
+/* MARS page theme */
+.mars{background:linear-gradient(#1a0905,#4a1c0c 50%,#7a3416);--ac:#ffb27a;--bd:#a4492a}
+.mars::before{content:"";background:radial-gradient(ellipse at 50% 110%,#ff8a4a55,#0000 60%),radial-gradient(1.5px 1.5px at 40px 60px,#ffc9a0,#0000);background-size:auto,120px 90px;animation:dust 9s linear infinite}
+@keyframes dust{to{background-position:0 0,120px 90px}}
+.orb{background:radial-gradient(ellipse at 40% 55%,#6a230c55 0 18%,#0000 20%),radial-gradient(circle at 32% 30%,#ffc38e,#d5602a 45%,#7a2a10 78%,#2a0d05);box-shadow:0 0 140px #ff7a3a55,inset -30px -20px 60px #000a}
